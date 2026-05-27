@@ -1,11 +1,8 @@
 import express from "express";
 import cors from "cors";
+import healthCheckRouter from "./routes/healthcheck.routes.js";
 
 const app = express();
-
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
 
 // Middlewares
 
@@ -23,4 +20,10 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
+
+app.use("/api/v1/healthcheck", healthCheckRouter);
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
 export default app;
