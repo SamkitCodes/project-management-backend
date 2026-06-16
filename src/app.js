@@ -3,6 +3,8 @@ import cors from "cors";
 import healthCheckRouter from "./routes/healthcheck.routes.js";
 import authRouther from "./routes/auth.routes.js";
 
+import cookieParser from "cookie-parser";
+
 const app = express();
 
 // Middlewares
@@ -10,6 +12,7 @@ const app = express();
 app.use(express.json({ limit: "16kb" })); //Parses JSON data
 app.use(express.urlencoded({ extended: true, limit: "16kb" })); //Parses data from URl
 app.use(express.static("public")); // Serves static files from public folder
+app.use(cookieParser()); // Parses cookies from incoming requests
 
 // CORS middleware
 app.use(

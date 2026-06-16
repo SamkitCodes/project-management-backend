@@ -1,4 +1,5 @@
-import { validationResult } from "../middlewares/validator.middleware.js";
+import { body } from "express-validator"; // 👈 Added this missing import
+import { validateRequest } from "../middlewares/validator.middleware.js";
 
 const userRegisterValidator = () => {
   return [
@@ -19,7 +20,6 @@ const userRegisterValidator = () => {
       .isLength({ min: 6 })
       .withMessage("Password must be at least 6 characters long"),
     validateRequest,
-    Í,
   ];
 };
 
