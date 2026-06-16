@@ -3,6 +3,7 @@ import { ApiResponse } from "../utils/api-response.js";
 import { ApiError } from "../utils/api-error.js";
 import { asyncHandler } from "../utils/async-handler.js";
 import { emailVerificationMailgenContent, sendEmail } from "../utils/mail.js";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -118,4 +119,33 @@ const loginUser = asyncHandler(async (req, res) => {
     );
 });
 
-export { registerUser, loginUser };
+const logoutUser = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+
+  if (!userId) {
+    throw new ApiError(401, "Unauthorized: User not found");
+  }
+
+  const user = await User.findByIdAndUpdate(
+    userId,
+    {
+      $set: {
+        refreshToken: null,
+      },
+    },
+    { new: true },
+  );
+
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+
+  return res
+    .status(200)
+    .clearCookie("refreshToken", options)
+    .clearCookie("accessToken", options)
+    .json(new ApiResponse(200, {}, "User logged out successfully"));
+});
+
+export { registerUser, loginUser, logoutUser };
