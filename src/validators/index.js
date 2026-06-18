@@ -1,4 +1,4 @@
-import { body } from "express-validator"; // 👈 Added this missing import
+import { body } from "express-validator";
 import { validate } from "../middlewares/validator.middleware.js";
 
 const userRegisterValidator = () => {
@@ -73,10 +73,34 @@ const userResetPasswordValidator = () => {
   ];
 };
 
+const createProjectValidator = () => {
+  return [
+    body("name").notEmpty().withMessage("Project name is required"),
+    body("description")
+      .notEmpty()
+      .withMessage("Project description is required"),
+    validate,
+  ];
+};
+
+const addProjectMemberValidator = () => {
+  return [
+    body("userId").notEmpty().withMessage("User ID is required"),
+    body("role")
+      .notEmpty()
+      .withMessage("Role is required")
+      .isIn(["owner", "admin", "member"])
+      .withMessage("Invalid role"),
+    validate,
+  ];
+};
+
 export {
   userRegisterValidator,
   userLoginValidator,
   userChangePasswordValidator,
   userForgotPasswordValidator,
   userResetPasswordValidator,
+  createProjectValidator,
+  addProjectMemberValidator,
 };

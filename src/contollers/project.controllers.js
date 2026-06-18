@@ -4,9 +4,8 @@ import { ApiResponse } from "../utils/api-response.js";
 import { ApiError } from "../utils/api-error.js";
 import { asyncHandler } from "../utils/async-handler.js";
 import { Project } from "../models/project.models.js";
-import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { ProjectMember } from "../models/projectmembers.models.js";
-import { UserRolesEnum } from "../utils/constants.js";
+import { UserRolesEnum, AvailableUserRole } from "../utils/constants.js";
 
 const getAllProjects = asyncHandler(async (req, res) => {
   const userId = req.user._id;
@@ -80,7 +79,7 @@ const createProject = asyncHandler(async (req, res) => {
 
   res
     .status(201)
-    .json(new ApiResponse(201, "Project created successfully", project));
+    .json(new ApiResponse(201, project, "Project created successfully"));
 });
 
 const updateProject = asyncHandler(async (req, res) => {
@@ -105,7 +104,7 @@ const updateProject = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(
-      new ApiResponse(200, project, "Project updated successfully", project),
+      new ApiResponse(200, project, "Project updated successfully"),
     );
 });
 
@@ -120,7 +119,7 @@ const deleteProject = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, "Project deleted successfully", project));
+    .json(new ApiResponse(200, project, "Project deleted successfully"));
 });
 
 const getProjectById = asyncHandler(async (req, res) => {

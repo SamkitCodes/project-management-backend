@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import healthCheckRouter from "./routes/healthcheck.routes.js";
 import authRouther from "./routes/auth.routes.js";
+import projectRouter from "./routes/project.routes.js";
+import { projectTaskRouter, taskRouter } from "./routes/task.routes.js";
 
 import cookieParser from "cookie-parser";
 
@@ -27,6 +29,9 @@ app.use(
 
 app.use("/api/v1/healthcheck", healthCheckRouter);
 app.use("/api/v1/auth", authRouther);
+app.use("/api/v1/projects", projectRouter);
+app.use("/api/v1/projects/:projectId/tasks", projectTaskRouter);
+app.use("/api/v1/tasks", taskRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
